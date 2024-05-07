@@ -1,0 +1,117 @@
+@startuml
+class org.example.app.network.ResponseEntity {
+- T data
++ String toString()
+}
+
+
+class org.example.app.App {
+- {static} Logger LOGGER
++ {static} void main(String[])
+}
+
+
+class org.example.app.controller.ContactController {
+~ ContactService service
++ Response create(Contact)
++ Response fetchAll()
++ Response fetchById(Long)
++ Response update(Long,Contact)
++ Response delete(Long)
+}
+
+
+class org.example.app.domain.contact.Contact {
+- Long id
+- String name
+- String phone
++ String toString()
+}
+
+
+class org.example.app.config.HibernateUtil {
+- {static} Logger LOGGER
+- {static} SessionFactory sessionFactory
++ {static} SessionFactory getSessionFactory()
+- {static} Configuration getConfiguration()
+}
+
+
+interface org.example.app.service.AppService {
+~ T create(T)
+~ List<T> fetchAll()
+~ T fetchById(Long)
+~ T update(Long,T)
+~ boolean delete(Long)
+}
+
+class org.example.app.network.ResponseInfo {
+- int status
+- String message
+- boolean success
++ String toString()
+}
+
+
+class org.example.app.network.ResponseEntityList {
+- List<T> data
++ String toString()
+}
+
+
+class org.example.app.service.impl.ContactService {
+~ ContactRepository repository
++ Contact create(Contact)
++ List<Contact> fetchAll()
++ Contact fetchById(Long)
++ Contact update(Long,Contact)
++ boolean delete(Long)
++ List<Contact> fetchByFirstName(String)
++ List<Contact> fetchAllOrderBy(String)
++ List<Contact> fetchBetweenIds(int,int)
+}
+
+
+class org.example.app.utils.Constants {
++ {static} String TEXT_NO_CONTENT
++ {static} String TEXT_NOT_FOUND
++ {static} String TEXT_DELETED
+}
+
+class org.example.app.config.NettyServerProvider {
+- {static} String BASE_URI
+- {static} int PORT
++ {static} String startHttpServer(Class<?>)
+}
+
+
+interface org.example.app.repository.AppRepository {
+~ void create(T)
+~ Optional<List<T>> fetchAll()
+~ Optional<T> fetchById(Long)
+~ void update(Long,T)
+~ void delete(Long)
+}
+
+class org.example.app.repository.impl.ContactRepository {
+- {static} Logger LOGGER
++ void create(Contact)
++ Optional<List<Contact>> fetchAll()
++ Optional<Contact> fetchById(Long)
++ void update(Long,Contact)
++ void delete(Long)
++ Optional<List<Contact>> fetchByFirstName(String)
++ Optional<List<Contact>> fetchAllOrderBy(String)
++ Optional<List<Contact>> fetchBetweenIds(Integer,Integer)
++ boolean isIdExists(Long)
++ Optional<Contact> getLastEntity()
+}
+
+
+
+
+org.example.app.network.ResponseInfo <|-- org.example.app.network.ResponseEntity
+org.example.app.network.ResponseInfo <|-- org.example.app.network.ResponseEntityList
+org.example.app.service.AppService <|.. org.example.app.service.impl.ContactService
+org.example.app.repository.AppRepository <|.. org.example.app.repository.impl.ContactRepository
+@enduml
